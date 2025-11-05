@@ -1,7 +1,182 @@
 # Central Bank Communication Analytics
 
-A repository about studying central bank communications. 
+A comprehensive text analytics toolkit for analyzing central bank communications. Learn to extract insights from monetary policy statements using natural language processing, sentiment analysis, and data visualization.
 
-Inspiration
-- [Canada's Monetary Policy Report: If Text Could Speak, What Would It Say?
-](https://github.com/bankofcanada/MPR-Text-Analytics-2019)
+## 📋 What This Project Does
+
+This project helps you:
+- **Analyze sentiment** of central bank statements (hawkish vs dovish)
+- **Track keywords** and topics over time
+- **Compare communications** across different central banks
+- **Visualize trends** in monetary policy language
+- **Learn text analytics** through hands-on tutorials
+
+## 🎓 Perfect For
+
+- **Students** learning text analytics and NLP
+- **Researchers** studying central bank communications
+- **Financial analysts** tracking monetary policy signals
+- **Data scientists** building text analysis pipelines
+- **Anyone curious** about how central banks communicate
+
+## 📊 Current Dataset
+
+- **Federal Reserve (Fed)**: 30 FOMC statements (2014-2017)
+- **Reserve Bank of New Zealand (RBNZ)**: 46 OCR statements (2006-2012)
+- Easy to extend with more banks and time periods
+
+## 🚀 Quick Start
+
+### 1. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Start Learning
+
+Open the interactive tutorials in order:
+
+```bash
+cd tutorials
+jupyter notebook
+```
+
+**Tutorial Sequence:**
+1. `01_loading_and_exploring_data.ipynb` - Load and understand your data (30 min)
+2. `02_text_analysis_basics.ipynb` - Word frequency and basic patterns (45 min)
+3. `03_sentiment_analysis.ipynb` - Sentiment and hawkish/dovish detection (1 hour)
+4. `04_advanced_visualizations.ipynb` - Publication-ready charts (1 hour)
+
+### 3. Run Quick Analysis
+
+For a quick analysis without tutorials:
+
+```bash
+python src/quick_analysis.py
+```
+
+## 📚 What You'll Learn
+
+### Tutorial 1: Data Loading & Exploration
+- Reading text files with Python
+- Working with pandas DataFrames
+- Basic text statistics
+- Data organization
+
+### Tutorial 2: Text Analysis Basics
+- Text preprocessing and cleaning
+- Word frequency analysis
+- Tracking keywords over time
+- Creating visualizations
+- Understanding bigrams
+
+### Tutorial 3: Sentiment Analysis
+- Using VADER sentiment analyzer
+- Detecting hawkish vs dovish language
+- Tracking sentiment over time
+- Comparing central banks
+- Finding significant shifts
+
+### Tutorial 4: Advanced Visualizations
+- Creating word clouds
+- Building heatmaps
+- Interactive Plotly dashboards
+- Multi-dimensional analysis
+- Export-ready charts
+
+## 🛠️ Tech Stack
+
+- **Python 3.8+**
+- **pandas** - Data manipulation
+- **nltk & vaderSentiment** - Natural language processing
+- **matplotlib, seaborn, plotly** - Visualizations
+- **wordcloud** - Word cloud generation
+- **jupyter** - Interactive notebooks
+
+## 📁 Project Structure
+
+```
+cb-text-analytics/
+├── README.md                 # This file
+├── requirements.txt          # Python dependencies
+├── tutorials/               # Step-by-step learning notebooks
+│   ├── 01_loading_and_exploring_data.ipynb
+│   ├── 02_text_analysis_basics.ipynb
+│   ├── 03_sentiment_analysis.ipynb
+│   └── 04_advanced_visualizations.ipynb
+├── src/                     # Utility scripts
+│   └── quick_analysis.py    # Quick analysis script
+├── usa-central-bank/        # Fed statements
+│   ├── fomc-statements/
+│   ├── fomc-statements-no-votes/
+│   └── fomc-implementation-note/
+└── nz-central-bank/         # RBNZ statements
+    └── ocr/
+```
+
+## 💡 Example Analyses
+
+### Sentiment Over Time
+Track how positive or negative statements become during economic events.
+
+### Hawkish vs Dovish Language
+Identify when central banks signal tightening or easing monetary policy.
+
+### Keyword Tracking
+Monitor mentions of "inflation", "employment", "growth" over time.
+
+### Comparative Analysis
+See how different central banks communicate about similar issues.
+
+## 🎯 Next Steps After Tutorials
+
+1. **Add More Data**
+   - Download recent statements
+   - Include more central banks (ECB, BoE, BoJ, etc.)
+
+2. **Advanced NLP**
+   - Topic modeling (LDA)
+   - Named entity recognition
+   - Embedding-based analysis
+
+3. **Build Dashboards**
+   - Create Streamlit web app
+   - Add real-time data feeds
+   - Automated report generation
+
+4. **Predictive Modeling**
+   - Correlate language with rate decisions
+   - Build forecast models
+   - Anomaly detection
+
+## 📖 Learning Resources
+
+### Inspiration
+- [Canada's Monetary Policy Report: If Text Could Speak, What Would It Say?](https://github.com/bankofcanada/MPR-Text-Analytics-2019)
+
+### Additional Reading
+- Federal Reserve statements: https://www.federalreserve.gov/
+- RBNZ statements: https://www.rbnz.govt.nz/
+- Text analytics with Python
+- Financial NLP techniques
+
+## 🤝 Contributing
+
+Feel free to:
+- Add more central bank data
+- Create additional tutorials
+- Improve existing analyses
+- Share interesting findings
+
+## 📝 License
+
+See LICENSE file for details.
+
+## 🙋 Questions?
+
+Start with Tutorial 1 and work through them in order. Each tutorial builds on previous concepts. If you get stuck, the tutorials include explanations and exercises.
+
+---
+
+**Happy Analyzing! 📈**
