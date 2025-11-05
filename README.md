@@ -29,6 +29,12 @@ This project helps you:
 
 ### 1. Install Dependencies
 
+**Using uv (recommended - fast!):**
+```bash
+uv sync
+```
+
+**Or using pip:**
 ```bash
 pip install -r requirements.txt
 ```
@@ -38,9 +44,14 @@ pip install -r requirements.txt
 Open the interactive tutorials in order:
 
 ```bash
-cd tutorials
+# With uv:
+uv run jupyter notebook
+
+# With pip:
 jupyter notebook
 ```
+
+Then navigate to `tutorials/` folder.
 
 **Tutorial Sequence:**
 1. `01_loading_and_exploring_data.ipynb` - Load and understand your data (30 min)
@@ -53,6 +64,10 @@ jupyter notebook
 For a quick analysis without tutorials:
 
 ```bash
+# With uv:
+uv run python src/quick_analysis.py
+
+# With pip:
 python src/quick_analysis.py
 ```
 

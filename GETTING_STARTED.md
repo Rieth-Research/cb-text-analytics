@@ -43,9 +43,35 @@ If you see `Python 3.8.x` or higher, you're good to go!
 cd cb-text-analytics
 ```
 
-### Step 2: (Optional) Create a Virtual Environment
+### Step 2: Install Dependencies
 
-This keeps dependencies organized and separate from other projects.
+**✨ Recommended: Using uv (Fast & Modern)**
+
+If you don't have uv installed:
+```bash
+# Install uv (one-time setup)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+# or on Windows:
+# powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+Then install dependencies:
+```bash
+uv sync
+```
+
+That's it! uv automatically:
+- Creates a virtual environment
+- Installs all dependencies
+- Manages Python versions
+- Runs 10-100x faster than pip
+
+**Alternative: Using pip (Traditional)**
+
+<details>
+<summary>Click to expand pip instructions</summary>
+
+Create a virtual environment:
 
 **On macOS/Linux:**
 ```bash
@@ -59,26 +85,22 @@ python -m venv venv
 venv\Scripts\activate
 ```
 
-You'll see `(venv)` in your terminal when activated.
-
-### Step 3: Install Dependencies
-
+Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-This will install:
-- pandas (data manipulation)
-- matplotlib, seaborn, plotly (visualizations)
-- nltk, vaderSentiment (text analysis)
-- wordcloud (word clouds)
-- jupyter (notebooks)
+You'll see `(venv)` in your terminal when activated.
 
-**Installation takes 2-3 minutes.**
+</details>
 
-### Step 4: Verify Installation
+### Step 3: Verify Installation
 
 ```bash
+# With uv:
+uv run python -c "import pandas, matplotlib, vaderSentiment; print('✓ All packages installed!')"
+
+# With pip/venv:
 python -c "import pandas, matplotlib, vaderSentiment; print('✓ All packages installed!')"
 ```
 
@@ -91,6 +113,10 @@ If you see the success message, you're ready!
 Want to see results immediately?
 
 ```bash
+# With uv:
+uv run python src/quick_analysis.py
+
+# With pip/venv:
 python src/quick_analysis.py
 ```
 
@@ -107,6 +133,10 @@ This will:
 Learn by doing with interactive notebooks:
 
 ```bash
+# With uv:
+uv run jupyter notebook
+
+# With pip/venv:
 jupyter notebook
 ```
 
@@ -303,6 +333,33 @@ A: Central bank statements are public domain. Check LICENSE for code.
 
 Here's a suggested plan for your first session:
 
+**Minutes 0-2**: Installation (with uv - it's really this fast!)
+```bash
+uv sync
+```
+
+**Minutes 2-7**: Quick analysis
+```bash
+uv run python src/quick_analysis.py
+```
+Look at the output and charts.
+
+**Minutes 7-12**: Start Jupyter
+```bash
+uv run jupyter notebook
+```
+Open Tutorial 1.
+
+**Minutes 12-30**: Work through first section of Tutorial 1
+- Load the data
+- See your first DataFrame
+- Calculate basic statistics
+
+**Result**: You've loaded real central bank data and done analysis!
+
+<details>
+<summary>Using pip instead? (Click to expand)</summary>
+
 **Minutes 0-5**: Installation
 ```bash
 pip install -r requirements.txt
@@ -312,26 +369,19 @@ pip install -r requirements.txt
 ```bash
 python src/quick_analysis.py
 ```
-Look at the output and charts.
 
 **Minutes 10-15**: Start Jupyter
 ```bash
 jupyter notebook
 ```
-Open Tutorial 1.
 
-**Minutes 15-30**: Work through first section of Tutorial 1
-- Load the data
-- See your first DataFrame
-- Calculate basic statistics
-
-**Result**: You've loaded real central bank data and done analysis!
+</details>
 
 ## 🎉 You're Ready!
 
 You have everything you need to start. Choose your path:
 
-- 🏃‍♂️ **Quick start**: Run `python src/quick_analysis.py`
+- 🏃‍♂️ **Quick start**: Run `uv run python src/quick_analysis.py`
 - 📚 **Deep dive**: Open `tutorials/01_loading_and_exploring_data.ipynb`
 - 📖 **Browse**: Look through files to get oriented
 
