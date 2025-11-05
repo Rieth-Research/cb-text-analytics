@@ -1,8 +1,10 @@
 """
 Quick Analysis Script for Central Bank Communications
 
-This script performs a rapid analysis of central bank statements and generates
+This script performs objective text analysis of central bank statements and generates
 summary statistics and visualizations.
+
+Focuses on measurable metrics, not subjective sentiment.
 
 Usage:
     python src/quick_analysis.py
@@ -13,7 +15,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from collections import Counter
 import re
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 # Configuration
 DATA_DIRS = {
@@ -53,19 +54,37 @@ def load_statements(directory, bank_name):
     return df
 
 def calculate_metrics(df):
-    """Calculate various text metrics."""
+    """Calculate objective text metrics."""
+    # Basic counts
     df['word_count'] = df['text'].str.split().str.len()
     df['char_count'] = df['text'].str.len()
     df['sentence_count'] = df['text'].str.count(r'[.!?]')
 
-    # Sentiment analysis
-    analyzer = SentimentIntensityAnalyzer()
-    df['sentiment'] = df['text'].apply(lambda x: analyzer.polarity_scores(x)['compound'])
+    # Complexity metrics
+    df['avg_sentence_length'] = df['word_count'] / df['sentence_count'].replace(0, 1)
+    df['avg_word_length'] = df['char_count'] / df['word_count'].replace(0, 1)
 
-    # Keyword counts
-    keywords = ['inflation', 'employment', 'growth', 'risk', 'uncertainty']
-    for keyword in keywords:
-        df[keyword] = df['text'].str.lower().str.count(keyword)
+    # Vocabulary diversity (Type-Token Ratio)
+    df['vocab_diversity'] = df['text'].apply(lambda x:
+        len(set(x.lower().split())) / len(x.split()) if len(x.split()) > 0 else 0
+    )
+
+    # Economic term tracking
+    economic_terms = {
+        'inflation': ['inflation', 'price', 'prices'],
+        'employment': ['employment', 'labor', 'jobs', 'unemployment'],
+        'growth': ['growth', 'economic activity', 'expansion'],
+        'risk': ['risk', 'uncertainty', 'uncertain'],
+        'policy': ['policy', 'monetary policy'],
+        'financial': ['financial', 'market', 'markets']
+    }
+
+    for term, keywords in economic_terms.items():
+        df[term] = df['text'].apply(lambda x:
+            sum(x.lower().count(kw) for kw in keywords)
+        )
+        # Normalize per 100 words
+        df[f'{term}_per_100'] = (df[term] / df['word_count']) * 100
 
     return df
 
@@ -86,24 +105,30 @@ def print_summary(df):
         print(f"\n   {bank}:")
         print(f"      Statements: {len(bank_data)}")
         print(f"      Avg words: {bank_data['word_count'].mean():.0f}")
-        print(f"      Avg sentiment: {bank_data['sentiment'].mean():.3f}")
+        print(f"      Avg sentence length: {bank_data['avg_sentence_length'].mean():.1f} words")
+        print(f"      Vocab diversity: {bank_data['vocab_diversity'].mean():.3f}")
         print(f"      Date range: {bank_data['date'].min().date()} to {bank_data['date'].max().date()}")
 
-    print(f"\n💡 Overall Insights:")
+    print(f"\n💡 Language Complexity:")
     print(f"   Average statement length: {df['word_count'].mean():.0f} words")
-    print(f"   Average sentiment score: {df['sentiment'].mean():.3f}")
-    print(f"   Most positive statement: {df.loc[df['sentiment'].idxmax(), 'date'].date()} ({df['sentiment'].max():.3f})")
-    print(f"   Most negative statement: {df.loc[df['sentiment'].idxmin(), 'date'].date()} ({df['sentiment'].min():.3f})")
+    print(f"   Average sentence length: {df['avg_sentence_length'].mean():.1f} words")
+    print(f"   Average word length: {df['avg_word_length'].mean():.1f} characters")
+    print(f"   Vocabulary diversity: {df['vocab_diversity'].mean():.3f}")
 
-    # Top keywords
-    print(f"\n🔑 Keyword Mentions (Total):")
-    keywords = ['inflation', 'employment', 'growth', 'risk', 'uncertainty']
-    for keyword in keywords:
-        total = df[keyword].sum()
-        avg = df[keyword].mean()
-        print(f"   {keyword.capitalize():15s}: {total:4.0f} total ({avg:.1f} per statement)")
+    # Longest/shortest
+    longest = df.loc[df['word_count'].idxmax()]
+    shortest = df.loc[df['word_count'].idxmin()]
+    print(f"\n   Longest statement: {longest['date'].date()} ({longest['word_count']:.0f} words)")
+    print(f"   Shortest statement: {shortest['date'].date()} ({shortest['word_count']:.0f} words)")
 
-    # Top words
+    # Economic terms
+    print(f"\n🔑 Economic Term Mentions (per 100 words avg):")
+    terms = ['inflation', 'employment', 'growth', 'risk', 'policy', 'financial']
+    for term in terms:
+        avg = df[f'{term}_per_100'].mean()
+        print(f"   {term.capitalize():15s}: {avg:.2f}")
+
+    # Top words (objective frequency)
     print(f"\n📝 Most Common Words:")
     all_text = ' '.join(df['text'])
     words = re.sub(r'\W+', ' ', all_text.lower()).split()
@@ -116,18 +141,17 @@ def print_summary(df):
         print(f"   {word:15s}: {count:4d}")
 
 def create_visualizations(df):
-    """Create summary visualizations."""
+    """Create objective visualizations."""
     fig, axes = plt.subplots(2, 2, figsize=(15, 10))
 
-    # 1. Sentiment over time
+    # 1. Language complexity over time
     for bank in df['bank'].unique():
         bank_data = df[df['bank'] == bank]
-        axes[0, 0].plot(bank_data['date'], bank_data['sentiment'],
+        axes[0, 0].plot(bank_data['date'], bank_data['avg_sentence_length'],
                        marker='o', label=bank, linewidth=2)
-    axes[0, 0].axhline(y=0, color='gray', linestyle='--', alpha=0.5)
-    axes[0, 0].set_title('Sentiment Over Time', fontweight='bold', fontsize=12)
+    axes[0, 0].set_title('Language Complexity (Sentence Length)', fontweight='bold', fontsize=12)
     axes[0, 0].set_xlabel('Date')
-    axes[0, 0].set_ylabel('Sentiment Score')
+    axes[0, 0].set_ylabel('Words per Sentence')
     axes[0, 0].legend()
     axes[0, 0].grid(True, alpha=0.3)
 
@@ -142,23 +166,24 @@ def create_visualizations(df):
     axes[0, 1].legend()
     axes[0, 1].grid(True, alpha=0.3)
 
-    # 3. Sentiment distribution
+    # 3. Vocabulary diversity over time
     for bank in df['bank'].unique():
         bank_data = df[df['bank'] == bank]
-        axes[1, 0].hist(bank_data['sentiment'], alpha=0.6, label=bank, bins=15)
-    axes[1, 0].axvline(x=0, color='red', linestyle='--', alpha=0.5)
-    axes[1, 0].set_title('Sentiment Distribution', fontweight='bold', fontsize=12)
-    axes[1, 0].set_xlabel('Sentiment Score')
-    axes[1, 0].set_ylabel('Frequency')
+        axes[1, 0].plot(bank_data['date'], bank_data['vocab_diversity'],
+                       marker='o', label=bank, linewidth=2)
+    axes[1, 0].set_title('Vocabulary Diversity', fontweight='bold', fontsize=12)
+    axes[1, 0].set_xlabel('Date')
+    axes[1, 0].set_ylabel('Type-Token Ratio')
     axes[1, 0].legend()
+    axes[1, 0].grid(True, alpha=0.3)
 
-    # 4. Keyword frequency
-    keywords = ['inflation', 'employment', 'growth', 'risk']
-    keyword_totals = [df[k].sum() for k in keywords]
-    axes[1, 1].bar(keywords, keyword_totals, color='steelblue')
-    axes[1, 1].set_title('Total Keyword Mentions', fontweight='bold', fontsize=12)
-    axes[1, 1].set_xlabel('Keyword')
-    axes[1, 1].set_ylabel('Total Mentions')
+    # 4. Economic term mentions
+    terms = ['inflation', 'employment', 'growth', 'risk']
+    term_avgs = [df[f'{t}_per_100'].mean() for t in terms]
+    axes[1, 1].bar(terms, term_avgs, color='steelblue')
+    axes[1, 1].set_title('Average Economic Term Mentions', fontweight='bold', fontsize=12)
+    axes[1, 1].set_xlabel('Term')
+    axes[1, 1].set_ylabel('Mentions per 100 words')
     axes[1, 1].tick_params(axis='x', rotation=45)
 
     plt.tight_layout()
@@ -192,7 +217,7 @@ def main():
     df = df.sort_values('date').reset_index(drop=True)
 
     print(f"\n✓ Total: {len(df)} statements loaded")
-    print("Calculating metrics...\n")
+    print("Calculating objective metrics...\n")
 
     # Calculate metrics
     df = calculate_metrics(df)
@@ -207,10 +232,15 @@ def main():
     print("\n" + "=" * 80)
     print("✅ Analysis complete!")
     print("=" * 80)
+    print("\n💡 Key findings based on objective metrics:")
+    print("   - Language complexity (sentence length)")
+    print("   - Vocabulary diversity (word variety)")
+    print("   - Economic term frequencies")
+    print("   - Communication pattern changes")
     print("\n💡 Next steps:")
     print("   1. Check 'quick_analysis_results.png' for visualizations")
-    print("   2. Explore the tutorials/ folder for in-depth learning")
-    print("   3. Modify this script to analyze specific aspects")
+    print("   2. Explore tutorials/ folder for topic modeling and more")
+    print("   3. Modify this script to track other measurable patterns")
     print("\n")
 
 if __name__ == "__main__":

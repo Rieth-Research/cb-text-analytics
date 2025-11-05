@@ -1,15 +1,16 @@
 # Central Bank Communication Analytics
 
-A comprehensive text analytics toolkit for analyzing central bank communications. Learn to extract insights from monetary policy statements using natural language processing, sentiment analysis, and data visualization.
+A comprehensive text analytics toolkit for analyzing central bank communications. Learn to extract **objective, measurable insights** from monetary policy statements using natural language processing, topic modeling, and data visualization.
 
 ## 📋 What This Project Does
 
 This project helps you:
-- **Analyze sentiment** of central bank statements (hawkish vs dovish)
-- **Track keywords** and topics over time
-- **Compare communications** across different central banks
-- **Visualize trends** in monetary policy language
-- **Learn text analytics** through hands-on tutorials
+- **Discover topics** automatically using statistical methods (LDA)
+- **Track concrete keywords** and economic terms over time
+- **Measure language complexity** and communication patterns
+- **Compare language use** across different central banks
+- **Visualize trends** in monetary policy communication
+- **Learn text analytics** through hands-on tutorials with real data
 
 ## 🎓 Perfect For
 
@@ -56,7 +57,7 @@ Then navigate to `tutorials/` folder.
 **Tutorial Sequence:**
 1. `01_loading_and_exploring_data.ipynb` - Load and understand your data (30 min)
 2. `02_text_analysis_basics.ipynb` - Word frequency and basic patterns (45 min)
-3. `03_sentiment_analysis.ipynb` - Sentiment and hawkish/dovish detection (1 hour)
+3. `03_topic_modeling_and_patterns.ipynb` - Topic modeling and objective analysis (1 hour)
 4. `04_advanced_visualizations.ipynb` - Publication-ready charts (1 hour)
 
 ### 3. Run Quick Analysis
@@ -86,12 +87,12 @@ python src/quick_analysis.py
 - Creating visualizations
 - Understanding bigrams
 
-### Tutorial 3: Sentiment Analysis
-- Using VADER sentiment analyzer
-- Detecting hawkish vs dovish language
-- Tracking sentiment over time
-- Comparing central banks
-- Finding significant shifts
+### Tutorial 3: Topic Modeling & Patterns
+- Topic modeling with LDA (discover hidden themes)
+- Tracking concrete economic terms
+- Measuring language complexity objectively
+- Vocabulary diversity analysis
+- Finding communication pattern shifts
 
 ### Tutorial 4: Advanced Visualizations
 - Creating word clouds
@@ -104,7 +105,7 @@ python src/quick_analysis.py
 
 - **Python 3.8+**
 - **pandas** - Data manipulation
-- **nltk & vaderSentiment** - Natural language processing
+- **nltk & scikit-learn** - Natural language processing & topic modeling
 - **matplotlib, seaborn, plotly** - Visualizations
 - **wordcloud** - Word cloud generation
 - **jupyter** - Interactive notebooks
@@ -115,10 +116,11 @@ python src/quick_analysis.py
 cb-text-analytics/
 ├── README.md                 # This file
 ├── requirements.txt          # Python dependencies
+├── pyproject.toml            # Modern Python project config (uv support)
 ├── tutorials/               # Step-by-step learning notebooks
 │   ├── 01_loading_and_exploring_data.ipynb
 │   ├── 02_text_analysis_basics.ipynb
-│   ├── 03_sentiment_analysis.ipynb
+│   ├── 03_topic_modeling_and_patterns.ipynb
 │   └── 04_advanced_visualizations.ipynb
 ├── src/                     # Utility scripts
 │   └── quick_analysis.py    # Quick analysis script
@@ -132,11 +134,11 @@ cb-text-analytics/
 
 ## 💡 Example Analyses
 
-### Sentiment Over Time
-Track how positive or negative statements become during economic events.
+### Topic Discovery
+Automatically discover hidden themes in statements using statistical methods (LDA).
 
-### Hawkish vs Dovish Language
-Identify when central banks signal tightening or easing monetary policy.
+### Language Complexity Trends
+Track how complex or simplified central bank language becomes over time.
 
 ### Keyword Tracking
 Monitor mentions of "inflation", "employment", "growth" over time.
