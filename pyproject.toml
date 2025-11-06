@@ -4,24 +4,6 @@ version = "0.1.0"
 description = "Text analytics toolkit for analyzing central bank communications"
 readme = "README.md"
 requires-python = ">=3.8"
-license = {file = "LICENSE"}
-authors = [
-    {name = "Central Bank Analytics Project"}
-]
-keywords = ["text-analytics", "nlp", "central-bank", "topic-modeling", "data-science"]
-classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Education",
-    "Intended Audience :: Science/Research",
-    "Topic :: Scientific/Engineering :: Information Analysis",
-    "Topic :: Text Processing :: Linguistic",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-]
 
 dependencies = [
     "pandas>=2.0.0",
@@ -43,18 +25,6 @@ dev = [
     "black>=23.0.0",
     "ruff>=0.1.0",
 ]
-
-[project.urls]
-Homepage = "https://github.com/johnrieth/cb-text-analytics"
-Repository = "https://github.com/johnrieth/cb-text-analytics"
-Documentation = "https://github.com/johnrieth/cb-text-analytics#readme"
-
-[project.scripts]
-cb-analyze = "src.quick_analysis:main"
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
 
 [tool.uv]
 dev-dependencies = [
